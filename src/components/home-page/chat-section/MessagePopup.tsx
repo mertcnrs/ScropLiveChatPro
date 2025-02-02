@@ -23,7 +23,7 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
   const [messages, setMessages] = useState<Message[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const timeouts: NodeJS.Timeout[] = [];
+  const [timeouts, setTimeouts] = useState<number[]>([]);
   const { guest } = useSelector(getSocket);
 
   useEffect(() => {
@@ -86,19 +86,21 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
     };
 
     const scheduleMessages = () => {
+      const newTimeouts: number[] = [];
       combinedMessages.forEach((msg, index) => {
-        const delay = index === 0 ? 5000 : Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // İlk mesaj 5 saniye, diğerleri 1-2 dakika arası
-        const timeout = setTimeout(() => addMessage(msg.text, msg.profilePic, msg.sender), delay * (index + 1));
-        timeouts.push(timeout);
+        const delay = index === 0 ? 5000 : Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
+        const timeout = window.setTimeout(() => addMessage(msg.text, msg.profilePic, msg.sender), delay * (index + 1));
+        newTimeouts.push(timeout);
       });
+      setTimeouts(newTimeouts);
     };
 
     scheduleMessages();
 
     return () => {
-      timeouts.forEach((timeout) => clearTimeout(timeout));
+      timeouts.forEach((timeout) => window.clearTimeout(timeout));
     };
-  }, [onNewMessage]);
+  }, [onNewMessage, timeouts]);
 
   const handleReadMessages = () => {
     setUnreadCount(0);

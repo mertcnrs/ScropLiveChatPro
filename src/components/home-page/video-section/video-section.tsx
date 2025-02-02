@@ -10,6 +10,7 @@ import { FaVideo, FaVideoSlash } from 'react-icons/fa';
 import { BsCameraVideo } from 'react-icons/bs';
 import { MdOutlinePersonOff } from 'react-icons/md';
 import LoadingScreen from './loading-screen';
+import Image from 'next/image';
 
 interface RandomVideoSectionProps {
   socket: Socket;
@@ -266,7 +267,13 @@ export default function RandomVideoSection({
                   <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/20">
-                        <img src={currentProfile.image} alt="Profile" className="w-full h-full object-cover" />
+                        <Image 
+                          src={currentProfile.image} 
+                          alt="Profile" 
+                          width={48} 
+                          height={48}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <div className="text-white">
                         <div className="text-lg font-medium">{currentProfile.name}</div>
@@ -282,7 +289,13 @@ export default function RandomVideoSection({
                       <div className="text-black text-sm space-y-1">
                         <p>Bakiyeniz yetersiz. Eşleşme yapabilmeniz için</p>
                         <div className="flex items-center justify-center gap-1">
-                          <img src="/altın_para.png" alt="Altın Para" className="w-6 h-6" />
+                          <Image 
+                            src="/altın_para.png" 
+                            alt="Altın Para" 
+                            width={24} 
+                            height={24}
+                            className="w-6 h-6"
+                          />
                           <span className="flex items-center">20 Altın Para gerekli.</span>
                         </div>
                       </div>
@@ -358,7 +371,13 @@ export default function RandomVideoSection({
         {showMessage && messages.length > 0 && !showPaywall && !showLoading && (
           <div className="absolute bottom-24 left-6 right-6 flex items-start gap-3 animate-fade-in">
             <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-              <img src={currentProfile.image} alt="Profile" className="w-full h-full object-cover" />
+              <Image 
+                src={currentProfile.image} 
+                alt="Profile" 
+                width={40} 
+                height={40}
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl rounded-tl-none">
               <div className="text-white/80 text-sm font-medium mb-1">{currentProfile.name}</div>
