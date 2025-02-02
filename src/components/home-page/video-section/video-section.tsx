@@ -115,9 +115,7 @@ export default function RandomVideoSection({
           dispatch(setRemoteMessage([{
             clientId: currentProfile.clientId,
             message: randomMessage,
-            time: new Date(),
-            image: currentProfile.image,
-            name: currentProfile.name
+            time: new Date()
           }]));
         }, 3000);
       }
