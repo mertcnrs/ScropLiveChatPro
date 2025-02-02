@@ -49,8 +49,8 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
     const combinedMessages = profiles.map((profile, index) => ({
       profilePic: profile,
       text: messageTexts[index],
-      sender: senderNames[index], // Assigning different sender names for each message
-      unreadCount: Math.floor(Math.random() * 4) + 1 // Random number between 1 and 4
+      sender: senderNames[index],
+      unreadCount: Math.floor(Math.random() * 4) + 1
     }));
 
     const shuffleArray = (array: any[]) => {
@@ -74,10 +74,10 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
         text,
         time: new Date().toLocaleTimeString(),
         profilePic: profile,
-        unreadCount: Math.floor(Math.random() * 4) + 1, // Random count between 1 and 4
+        unreadCount: Math.floor(Math.random() * 4) + 1,
       };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      setUnreadCount((prevCount) => {
+      setMessages(prevMessages => [...prevMessages, newMessage]);
+      setUnreadCount(prevCount => {
         const newCount = prevCount + 1;
         onNewMessage(newCount);
         return newCount;
@@ -89,7 +89,9 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
       const newTimeouts: number[] = [];
       combinedMessages.forEach((msg, index) => {
         const delay = index === 0 ? 5000 : Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
-        const timeout = window.setTimeout(() => addMessage(msg.text, msg.profilePic, msg.sender), delay * (index + 1));
+        const timeout = window.setTimeout(() => {
+          addMessage(msg.text, msg.profilePic, msg.sender);
+        }, delay * (index + 1));
         newTimeouts.push(timeout);
       });
       setTimeouts(newTimeouts);
@@ -98,9 +100,9 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
     scheduleMessages();
 
     return () => {
-      timeouts.forEach((timeout) => window.clearTimeout(timeout));
+      timeouts.forEach(timeout => window.clearTimeout(timeout));
     };
-  }, [onNewMessage, timeouts]);
+  }, [onNewMessage]);
 
   const handleReadMessages = () => {
     setUnreadCount(0);
