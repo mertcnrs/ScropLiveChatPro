@@ -23,103 +23,62 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
   const [messages, setMessages] = useState<Message[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const [timeouts, setTimeouts] = useState<number[]>([]);
   const { guest } = useSelector(getSocket);
 
-  useEffect(() => {
-    const profiles = [
-      '/foto1.jpg', '/foto2.jpg', '/foto3.jpg', '/foto4.jpg', '/foto5.jpg',
-      '/foto6.jpg', '/foto7.jpg', '/foto8.jpg', '/foto9.jpg'
-    ];
+  // Mesaj gönderme fonksiyonu
+  const sendMessage = () => {
+    const profiles = ['/foto1.jpg', '/foto2.jpg', '/foto3.jpg', '/foto4.jpg', '/foto5.jpg'];
     const messageTexts = [
       'Merhaba aşkım nasılsın? 🥰',
       'Benim adım Elif, senin adın ne?',
       'Yaz tatili geldi, nereye gitmek istersin?',
       'Görüşmek üzere, kendine iyi bak!',
-      'Sadece seni düşündüm!',
-      'Yaz tatili geldi, nereye gitmek istersin?',
-      'Yaz tatili geldi, nereye gitmek istersin?',
-      'Dilersen konuşabiliriz.',
-      'Yaz tatili geldi, nereye gitmek istersin?'
+      'Sadece seni düşündüm!'
     ];
-    const senderNames = [
-      'Elif', 'Ayşe', 'Zeynep', 'Fatma', 'Meryem', 'Seda', 'Havva', 'Leyla', 'Esra'
-    ];
+    const senderNames = ['Elif', 'Ayşe', 'Zeynep', 'Fatma', 'Meryem'];
 
-    const combinedMessages = profiles.map((profile, index) => ({
-      profilePic: profile,
-      text: messageTexts[index],
-      sender: senderNames[index],
-      unreadCount: Math.floor(Math.random() * 4) + 1
-    }));
-
-    const shuffleArray = (array: any[]) => {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
+    const randomIndex = Math.floor(Math.random() * profiles.length);
+    const newMessage: Message = {
+      id: Date.now(),
+      sender: senderNames[randomIndex],
+      text: messageTexts[randomIndex],
+      time: new Date().toLocaleTimeString(),
+      profilePic: profiles[randomIndex],
+      unreadCount: 1
     };
 
-    shuffleArray(combinedMessages);
+    setMessages(prev => [...prev, newMessage]);
+    setUnreadCount(prev => prev + 1);
+    onNewMessage(unreadCount + 1);
 
-    const playNotificationSound = () => {
-      const audio = new Audio('/notification.mp3');
-      audio.play();
-    };
+    // Bildirim sesi
+    const audio = new Audio('/notification.mp3');
+    audio.play().catch(console.error);
+  };
 
-    const addMessage = (text: string, profile: string, sender: string) => {
-      const newMessage: Message = {
-        id: Date.now(),
-        sender,
-        text,
-        time: new Date().toLocaleTimeString(),
-        profilePic: profile,
-        unreadCount: Math.floor(Math.random() * 4) + 1,
-      };
-      setMessages(prevMessages => [...prevMessages, newMessage]);
-      setUnreadCount(prevCount => {
-        const newCount = prevCount + 1;
-        onNewMessage(newCount);
-        return newCount;
-      });
-      playNotificationSound();
-    };
+  useEffect(() => {
+    if (!isOpen) return;
 
-    const scheduleMessages = () => {
-      const newTimeouts: number[] = [];
-      combinedMessages.forEach((msg, index) => {
-        const delay = index === 0 ? 5000 : Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
-        const timeout = window.setTimeout(() => {
-          addMessage(msg.text, msg.profilePic, msg.sender);
-        }, delay * (index + 1));
-        newTimeouts.push(timeout);
-      });
-      setTimeouts(newTimeouts);
-    };
+    // İlk mesajı 5 saniye sonra gönder
+    const timer1 = setTimeout(sendMessage, 5000);
 
-    scheduleMessages();
+    // Sonraki mesajları her 15 saniyede bir gönder
+    const timer2 = setInterval(sendMessage, 15000);
 
     return () => {
-      timeouts.forEach(timeout => window.clearTimeout(timeout));
+      clearTimeout(timer1);
+      clearInterval(timer2);
     };
-  }, [onNewMessage]);
-
-  const handleReadMessages = () => {
-    setUnreadCount(0);
-    onNewMessage(0);
-  };
+  }, [isOpen]);
 
   const handleMessageClick = (msg: Message) => {
     setSelectedMessage(msg);
-    setMessages((prevMessages) => {
-      return prevMessages.map((message) => {
-        if (message.id === msg.id) {
-          return { ...message, unreadCount: 0 }; // Mark this message as read
-        }
-        return message;
-      });
-    });
-    setUnreadCount((prevCount) => prevCount - msg.unreadCount); // Decrease unread count
+    setMessages(prevMessages => 
+      prevMessages.map(message => 
+        message.id === msg.id ? { ...message, unreadCount: 0 } : message
+      )
+    );
+    setUnreadCount(prev => prev - msg.unreadCount);
     onNewMessage(unreadCount - msg.unreadCount);
   };
 
@@ -175,9 +134,7 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
                 </p>
               </div>
               {msg.unreadCount > 0 && (
-                <div
-                  className="bg-red-500 text-white rounded-full text-xs w-6 h-6 flex items-center justify-center ml-2"
-                >
+                <div className="bg-red-500 text-white rounded-full text-xs w-6 h-6 flex items-center justify-center ml-2">
                   {msg.unreadCount}
                 </div>
               )}
@@ -194,13 +151,12 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
             border-radius: 0;
           }
         }
-        /* Kaydırma çubuğunu gizlemek için */
         .p-4::-webkit-scrollbar {
-          display: none; /* Chrome, Safari ve Opera için */
+          display: none;
         }
         .p-4 {
-          -ms-overflow-style: none; /* Internet Explorer ve Edge için */
-          scrollbar-width: none; /* Firefox için */
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>
