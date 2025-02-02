@@ -25,8 +25,7 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const { guest } = useSelector(getSocket);
 
-  // Mesaj gönderme fonksiyonu
-  const sendMessage = () => {
+  useEffect(() => {
     const profiles = ['/foto1.jpg', '/foto2.jpg', '/foto3.jpg', '/foto4.jpg', '/foto5.jpg'];
     const messageTexts = [
       'Merhaba aşkım nasılsın? 🥰',
@@ -37,39 +36,53 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
     ];
     const senderNames = ['Elif', 'Ayşe', 'Zeynep', 'Fatma', 'Meryem'];
 
-    const randomIndex = Math.floor(Math.random() * profiles.length);
-    const newMessage: Message = {
-      id: Date.now(),
-      sender: senderNames[randomIndex],
-      text: messageTexts[randomIndex],
-      time: new Date().toLocaleTimeString(),
-      profilePic: profiles[randomIndex],
-      unreadCount: 1
+    const addNewMessage = () => {
+      const randomIndex = Math.floor(Math.random() * profiles.length);
+      const newMessage: Message = {
+        id: Date.now(),
+        sender: senderNames[randomIndex],
+        text: messageTexts[randomIndex],
+        time: new Date().toLocaleTimeString(),
+        profilePic: profiles[randomIndex],
+        unreadCount: 1
+      };
+
+      setMessages(prev => [...prev, newMessage]);
+      setUnreadCount(prev => {
+        const newCount = prev + 1;
+        onNewMessage(newCount);
+        return newCount;
+      });
+
+      // Bildirim sesi
+      const audio = new Audio('/notification.mp3');
+      audio.play().catch(console.error);
+
+      // Bir sonraki mesaj için random süre belirle (1-2 dakika arası)
+      scheduleNextMessage();
     };
 
-    setMessages(prev => [...prev, newMessage]);
-    setUnreadCount(prev => prev + 1);
-    onNewMessage(unreadCount + 1);
-
-    // Bildirim sesi
-    const audio = new Audio('/notification.mp3');
-    audio.play().catch(console.error);
-  };
-
-  useEffect(() => {
-    if (!isOpen) return;
+    const scheduleNextMessage = () => {
+      const minDelay = 60000; // 1 dakika
+      const maxDelay = 120000; // 2 dakika
+      const randomDelay = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
+      
+      console.log(`Bir sonraki mesaj ${randomDelay/1000} saniye sonra gelecek`);
+      setTimeout(addNewMessage, randomDelay);
+    };
 
     // İlk mesajı 5 saniye sonra gönder
-    const timer1 = setTimeout(sendMessage, 5000);
-
-    // Sonraki mesajları her 15 saniyede bir gönder
-    const timer2 = setInterval(sendMessage, 15000);
+    console.log('Scheduling first message in 5 seconds...');
+    const initialTimer = setTimeout(() => {
+      console.log('Sending first message...');
+      addNewMessage();
+    }, 5000);
 
     return () => {
-      clearTimeout(timer1);
-      clearInterval(timer2);
+      console.log('Cleaning up message system...');
+      clearTimeout(initialTimer);
     };
-  }, [isOpen]);
+  }, []); // Sadece component mount olduğunda çalışsın
 
   const handleMessageClick = (msg: Message) => {
     setSelectedMessage(msg);
@@ -78,8 +91,11 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
         message.id === msg.id ? { ...message, unreadCount: 0 } : message
       )
     );
-    setUnreadCount(prev => prev - msg.unreadCount);
-    onNewMessage(unreadCount - msg.unreadCount);
+    setUnreadCount(prev => {
+      const newCount = Math.max(0, prev - msg.unreadCount);
+      onNewMessage(newCount);
+      return newCount;
+    });
   };
 
   const closeModal = () => {
