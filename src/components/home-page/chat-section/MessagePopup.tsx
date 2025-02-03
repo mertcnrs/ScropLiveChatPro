@@ -134,7 +134,7 @@ export default function MessagePopup({ isOpen, onRequestClose, onNewMessage }: M
           messages.map((msg) => (
             <div
               key={msg.id}
-              className="flex items-center mb-2 cursor-pointer border-b pb-2 transition-transform duration-200 transform hover:translate-x-1"
+              className="flex items-center cursor-pointer transition-transform duration-200 transform hover:translate-x-1 py-2"
               onClick={() => handleMessageClick(msg)}
             >
               <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300">

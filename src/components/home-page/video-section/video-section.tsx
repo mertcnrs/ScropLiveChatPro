@@ -239,8 +239,8 @@ export default function RandomVideoSection({
   const localVideoRef = isMobile ? responsiveVideoRef : videoRef;
 
   return (
-    <div className="flex flex-col xl:flex-row align-middle gap-2">
-      <Box className="w-full bg-[#1f1b2e] relative h-[50vh] xl:h-[85vh] rounded-2xl overflow-hidden">
+    <div className="flex flex-col xl:flex-row align-middle gap-1 mt-1">
+      <Box className="w-full bg-[#1f1b2e] relative h-[65vh] sm:h-[75vh] xl:h-[85vh] rounded-xl overflow-hidden">
         {showLoading && guest.count <= 1 && (
           <LoadingScreen 
             imageUrl={currentProfile.image}
@@ -320,28 +320,28 @@ export default function RandomVideoSection({
         </div>
 
         {/* Kamera preview ve kontrol butonları */}
-        <div className="absolute top-4 right-4">
-          <div className="w-[120px] h-[160px] bg-black rounded-xl overflow-hidden border border-white/10 relative group">
+        <div className="absolute top-2 sm:top-4 right-2 sm:right-4">
+          <div className="w-[90px] h-[120px] sm:w-[120px] sm:h-[160px] bg-black rounded-xl overflow-hidden border border-white/10 relative group">
             {/* Kontrol butonları */}
-            <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2 z-10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
               <Button
-                className="p-2 bg-black/60 hover:bg-black/80 text-white rounded-full backdrop-blur-sm"
+                className="p-1.5 sm:p-2 bg-black/60 hover:bg-black/80 text-white rounded-full backdrop-blur-sm"
                 onClick={onAudioToggler}
               >
                 {isAudioEnabled ? (
-                  <AiOutlineAudio size={16} />
+                  <AiOutlineAudio size={14} className="sm:w-4 sm:h-4" />
                 ) : (
-                  <AiOutlineAudioMuted size={16} />
+                  <AiOutlineAudioMuted size={14} className="sm:w-4 sm:h-4" />
                 )}
               </Button>
               <Button
-                className="p-2 bg-black/60 hover:bg-black/80 text-white rounded-full backdrop-blur-sm"
+                className="p-1.5 sm:p-2 bg-black/60 hover:bg-black/80 text-white rounded-full backdrop-blur-sm"
                 onClick={onVideoToggler}
               >
                 {isVideoEnabled ? (
-                  <FaVideo size={16} />
+                  <FaVideo size={14} className="sm:w-4 sm:h-4" />
                 ) : (
-                  <FaVideoSlash size={16} />
+                  <FaVideoSlash size={14} className="sm:w-4 sm:h-4" />
                 )}
               </Button>
             </div>
@@ -367,8 +367,8 @@ export default function RandomVideoSection({
 
         {/* Mesaj gösterimi */}
         {showMessage && messages.length > 0 && !showPaywall && !showLoading && (
-          <div className="absolute bottom-24 left-6 right-6 flex items-start gap-3 animate-fade-in">
-            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+          <div className="absolute bottom-20 sm:bottom-24 left-4 sm:left-6 right-4 sm:right-6 flex items-start gap-2 sm:gap-3 animate-fade-in">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden flex-shrink-0">
               <Image 
                 src={currentProfile.image} 
                 alt="Profile" 
@@ -377,27 +377,27 @@ export default function RandomVideoSection({
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl rounded-tl-none">
-              <div className="text-white/80 text-sm font-medium mb-1">{currentProfile.name}</div>
-              <div className="text-white">{messages[messages.length - 1].text}</div>
+            <div className="bg-white/10 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl rounded-tl-none">
+              <div className="text-white/80 text-xs sm:text-sm font-medium mb-0.5 sm:mb-1">{currentProfile.name}</div>
+              <div className="text-white text-sm sm:text-base">{messages[messages.length - 1].text}</div>
             </div>
           </div>
         )}
 
         {/* Başla/Sonraki/Geç butonları */}
         {!showLoading && !showPaywall && (
-          <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-t from-black/80 to-transparent">
             <div className="flex justify-center">
               {partner ? (
                 <Button
-                  className="px-8 py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-full"
+                  className="px-6 sm:px-8 py-2.5 sm:py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-full text-sm sm:text-base"
                   onClick={onStopHandler}
                 >
                   Sonraki
                 </Button>
               ) : videoCount > 0 ? (
                 <Button
-                  className="w-[120px] h-[32px] bg-red-500 hover:bg-red-600 text-white font-medium rounded-[50px] flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-110"
+                  className="w-[100px] sm:w-[120px] h-[28px] sm:h-[32px] bg-red-500 hover:bg-red-600 text-white font-medium rounded-[50px] flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-110"
                   onClick={() => {
                     setShowLoading(true);
                     setTimeout(() => {
@@ -407,16 +407,16 @@ export default function RandomVideoSection({
                     }, 3000);
                   }}
                 >
-                  <span className="text-lg">Geç</span>
+                  <span className="text-base sm:text-lg">Geç</span>
                 </Button>
               ) : (
                 <Button
-                  className={`w-[120px] h-[42px] bg-[#FF00FF] hover:opacity-90 text-white font-medium rounded-[50px] flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-110
+                  className={`w-[100px] sm:w-[120px] h-[36px] sm:h-[42px] bg-[#FF00FF] hover:opacity-90 text-white font-medium rounded-[50px] flex items-center justify-center gap-1.5 sm:gap-2 transition-all duration-300 transform hover:scale-110
                     ${partnerLoading ? 'animate-pulse' : ''}`}
                   onClick={onRandomHandler}
                 >
-                  <BsCameraVideo size={24} />
-                  <span className="text-lg">Başla</span>
+                  <BsCameraVideo size={20} className="sm:w-6 sm:h-6" />
+                  <span className="text-base sm:text-lg">Başla</span>
                 </Button>
               )}
             </div>

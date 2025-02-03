@@ -31,11 +31,11 @@ export default function HomePage(): React.ReactNode {
   });
 
   return (
-    <Box className="flex-1 flex flex-col p-3 md:px-8 md:py-6 overflow-y-auto bg-[#1a1625]">
+    <Box className="flex-1 flex flex-col p-2 pt-1 md:px-6 md:py-2 overflow-y-auto bg-[#1a1625]">
       <HeaderSection guest={guest} />
 
-      <div className="flex flex-col xl:flex-row gap-4 h-[calc(100vh-120px)]">
-        <div className="xl:flex-[3] h-full">
+      <div className="flex flex-col xl:flex-row gap-2 h-[calc(100vh-90px)]">
+        <div className="xl:flex-[4] h-full">
           <RandomVideoSection
             socket={socket}
             peerId={peerId}
