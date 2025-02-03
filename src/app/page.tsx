@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Loading from './loading';
 
 export default function Home(): React.ReactNode {
+  const [showLoading, setShowLoading] = useState(false);
   const [data, setData] = useState<string[]>([]); // Örnek bir durum
 
   useEffect(() => {
@@ -116,17 +118,19 @@ export default function Home(): React.ReactNode {
           <div className="mb-8">
             <h1 className="text-7xl font-bold mb-5 text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-white animate-gradient">Yüz Yüze</h1>
             <p className="text-xl mb-8 text-purple-100">Başlamak için tuşa tıkla</p>
-            <Link href="/chat">
-              <button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white text-xl font-semibold px-12 py-4 rounded-full shadow-lg transform transition hover:scale-105 glow-button animate-pulse-scale">
-                Görüntülü Sohbete Başla
-              </button>
-            </Link>
+            <button 
+              onClick={() => setShowLoading(true)}
+              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white text-xl font-semibold px-12 py-4 rounded-full shadow-lg transform transition hover:scale-105 glow-button animate-pulse-scale"
+            >
+              Görüntülü Sohbete Başla
+            </button>
           </div>
           <button className="bg-white text-black hover:bg-gray-100 px-8 py-3 rounded-full transition-all font-medium">
             Uygulamayı İndir
           </button>
         </div>
       </div>
+      {showLoading && <Loading />}
     </div>
   );
 }
