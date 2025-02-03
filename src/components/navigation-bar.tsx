@@ -10,10 +10,14 @@ export default function NavigationBarComponent(): React.ReactNode {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [animate, setAnimate] = useState(false);
+  const [activeTab, setActiveTab] = useState<'messages' | 'friends'>('messages');
 
-  const handleOpenPopup = () => {
+  const handleOpenPopup = (tab: 'messages' | 'friends') => {
+    setActiveTab(tab);
     setIsPopupOpen(true);
-    setUnreadCount(0);
+    if (tab === 'messages') {
+      setUnreadCount(0);
+    }
   };
 
   useEffect(() => {
@@ -26,8 +30,8 @@ export default function NavigationBarComponent(): React.ReactNode {
 
   return (
     <Box className="flex flex-row md:flex-col md:w-28 px-4 py-2 md:p-4 bg-[#1f1b2e] text-center justify-center items-center gap-10 w-screen h-14 md:h-screen">
-      <div>
-        <RiGroupFill className="text-xl md:text-2xl text-zinc-400" />
+      <div onClick={() => handleOpenPopup('friends')}>
+        <RiGroupFill className="text-2xl md:text-3xl text-zinc-400 cursor-pointer hover:text-zinc-200 transition-all duration-200 hover:scale-110" />
       </div>
 
       <div
@@ -48,7 +52,7 @@ export default function NavigationBarComponent(): React.ReactNode {
         </span>
       </div>
 
-      <div className="relative" onClick={handleOpenPopup}>
+      <div className="relative" onClick={() => handleOpenPopup('messages')}>
         <Image
           src={'/icon-likeyou.png'}
           alt="like icon"
@@ -69,6 +73,7 @@ export default function NavigationBarComponent(): React.ReactNode {
         isOpen={isPopupOpen}
         onRequestClose={() => setIsPopupOpen(false)}
         onNewMessage={setUnreadCount}
+        initialTab={activeTab}
       />
     </Box>
   );

@@ -46,11 +46,15 @@ export default function OnlineIndicatorComponent({
     const interval = setInterval(() => {
       setAnimatedCount(prev => {
         const change = Math.random() > 0.5 
-          ? Math.floor(Math.random() * 7) + 1  // 1-7 arası artış
-          : -(Math.floor(Math.random() * 10) + 1); // 1-10 arası azalış
-        return prev + change;
+          ? Math.floor(Math.random() * (123 - 23 + 1)) + 23  // 23-123 arası artış
+          : -(Math.floor(Math.random() * (189 - 55 + 1)) + 55); // 55-189 arası azalış
+        const newValue = prev + change;
+        // Sayının belirli bir aralıkta kalmasını sağla
+        if (newValue < targetNumber - 2000) return prev; // Çok fazla düşmesini engelle
+        if (newValue > targetNumber + 2000) return prev; // Çok fazla artmasını engelle
+        return newValue;
       });
-    }, 10000); // Her 10 saniyede bir
+    }, 3000); // Her 3 saniyede bir değişim
 
     return () => clearInterval(interval);
   }, [isInitialAnimationDone]);
@@ -65,22 +69,22 @@ export default function OnlineIndicatorComponent({
 
       <div className="flex items-center gap-3">
         {/* Sayı container'ı */}
-        <div className="min-w-[100px] sm:min-w-[120px]"> {/* Minimum genişlik */}
+        <div className="min-w-[80px] sm:min-w-[100px] flex justify-end"> {/* Minimum genişlik ve sağa hizalama */}
           {(!init || loading) ? (
             <div className="flex justify-end">
-              <LuLoader2 className="animate-spin text-2xl sm:text-4xl text-white" />
+              <LuLoader2 className="animate-spin text-xl sm:text-2xl md:text-4xl text-white" />
             </div>
           ) : (
-            <Text className="text-2xl sm:text-4xl font-semibold text-white text-right">
+            <Text className="text-xl sm:text-2xl md:text-4xl font-semibold text-white text-right">
               {formatNumber(animatedCount)}
             </Text>
           )}
         </div>
 
         {/* İkon ve yazı */}
-        <div className="flex items-center gap-2">
-          <FaCircle className="text-sm sm:text-base text-green-500 flex-shrink-0" />
-          <Text className="text-base sm:text-xl font-medium text-neutral-200 whitespace-nowrap">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <FaCircle className="text-xs sm:text-sm md:text-base text-green-500 flex-shrink-0" />
+          <Text className="text-sm sm:text-base md:text-xl font-medium text-neutral-200 whitespace-nowrap">
             Online Users
           </Text>
         </div>
