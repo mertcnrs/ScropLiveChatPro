@@ -3,6 +3,7 @@ import type { MutableRefObject, RefObject } from 'react';
 import { useDispatch, useSelector } from '@/store/store';
 import { setRemoteLoadingState, setRemoteMessage } from '@/store/slices/peerSlice';
 import { getSocket } from '@/store/slices/socketSlice';
+import { decreaseBalance, resetBalance, getBalance } from '@/store/slices/balanceSlice';
 import { Box, Button } from '@radix-ui/themes';
 import { Socket } from 'socket.io-client';
 import { AiOutlineAudio, AiOutlineAudioMuted } from 'react-icons/ai';
@@ -37,6 +38,7 @@ export default function RandomVideoSection({
 }: RandomVideoSectionProps): React.ReactNode {
   const dispatch = useDispatch();
   const { guest } = useSelector(getSocket);
+  const { amount } = useSelector(getBalance);
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const [videoCount, setVideoCount] = useState<number>(0);
   const [showPaywall, setShowPaywall] = useState<boolean>(false);
@@ -64,11 +66,8 @@ export default function RandomVideoSection({
     "Merhaba, sohbet edelim mi?"
   ];
 
-  const usedProfiles = new Set<string>(); // Kullanılan profilleri takip etmek için bir Set oluşturuyoruz
-
   // Random profil seçme fonksiyonu
   const getRandomProfile = () => {
-    let randomNum = Math.floor(Math.random() * 9) + 1;
     const names = [
       { name: 'Ayşe', location: 'İstanbul' },
       { name: 'Zeynep', location: 'Ankara' },
@@ -81,26 +80,19 @@ export default function RandomVideoSection({
       { name: 'Yasemin', location: 'Trabzon' }
     ];
 
-    // Daha önce seçilen profilleri kontrol et
-    while (usedProfiles.has(`CLIENT_${randomNum}`)) {
-      randomNum = Math.floor(Math.random() * 9) + 1; // Yeni bir rastgele numara seç
-    }
-
-    const newProfile = {
+    const randomNum = Math.floor(Math.random() * 9) + 1;
+    return {
       image: `/foto${randomNum}.jpg`,
       name: names[randomNum - 1].name,
       location: names[randomNum - 1].location,
       clientId: `CLIENT_${randomNum}`
     };
-
-    usedProfiles.add(newProfile.clientId); // Yeni profili kullanılanlar listesine ekle
-    return newProfile;
   };
 
   // Video oynatma fonksiyonu
   const playVideo = (videoNumber: number, currentCount: number) => {
     if (partnerVideoRef.current) {
-      if (currentCount >= 3) {
+      if (currentCount >= 3 || amount <= 10) {
         setShowPaywall(true);
         return;
       }
@@ -123,8 +115,9 @@ export default function RandomVideoSection({
       setTimeout(() => {
         const nextCount = currentCount + 1;
         setVideoCount(nextCount);
+        dispatch(decreaseBalance());
 
-        if (nextCount >= 3) {
+        if (nextCount >= 3 || amount <= 30) {
           setShowPaywall(true);
         } else {
           setShowLoading(true);
@@ -140,22 +133,31 @@ export default function RandomVideoSection({
     }
   };
 
+  useEffect(() => {
+    if (guest.count <= 1 && videoCount >= 3) {
+      setShowPaywall(true);
+    }
+  }, [guest.count, videoCount]);
+
   const onRandomHandler = () => {
     if (guest.count <= 1) {
-      if (showPaywall) return;
+      // Video modu için bakiye kontrolü
+      if (videoCount >= 3 || amount <= 10) {
+        setShowPaywall(true);
+        return;
+      }
 
+      const newProfile = getRandomProfile();
+      setCurrentProfile(newProfile);
       setShowLoading(true);
-      setShowPaywall(false);
-      const newProfile = getRandomProfile(); // Yeni profil seç
-      setCurrentProfile(newProfile); // Hem loading hem video için aynı profili kullan
-
       setTimeout(() => {
         setShowLoading(false);
-        const firstVideo = Math.floor(Math.random() * 12) + 1;
-        setVideoCount(1);
-        playVideo(firstVideo, 0);
+        setVideoCount(prev => prev + 1);
+        const nextVideo = Math.floor(Math.random() * 12) + 1;
+        playVideo(nextVideo, videoCount);
       }, 3000);
     } else {
+      // Normal sohbet modu için
       socket.emit('joinRandomRoom', peerId);
       dispatch(setRemoteLoadingState(true));
     }

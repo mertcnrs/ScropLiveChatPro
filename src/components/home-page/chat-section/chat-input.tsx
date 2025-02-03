@@ -9,16 +9,19 @@ import { IoIosSend } from 'react-icons/io';
 interface ChatInputComponentProps {
   socket: Socket;
   clientId: string | undefined;
+  onMessageAttempt: () => void;
 }
 
 export default function ChatInputComponent({
   socket,
   clientId,
+  onMessageAttempt,
 }: ChatInputComponentProps): React.ReactNode {
   const [clientMessage, setClientMessage] = useState<string>('');
 
   const onSendMessageHandler = () => {
     if (clientMessage) {
+      onMessageAttempt();
       socket.emit('sendRandomMessage', {
         clientId,
         message: clientMessage,

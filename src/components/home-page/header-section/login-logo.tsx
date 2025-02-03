@@ -1,11 +1,11 @@
 import React from 'react';
-import { Box, Button } from '@radix-ui/themes';
+import { Box } from '@radix-ui/themes';
 import Image from 'next/image';
 
 export default function LoginLogoComponent(): React.ReactNode {
   return (
-    <Box className="flex flex-row md:gap-4 md:items-center items-end mt-0 pt-0">
-      <div className="hidden lg:block w-full">
+    <Box>
+      <div className="hidden lg:block">
         <Image
           src={'/ranchat-main.png'}
           alt="ranchat-main"
@@ -14,7 +14,7 @@ export default function LoginLogoComponent(): React.ReactNode {
           className="object-contain"
         />
       </div>
-      <div className="block lg:hidden w-full">
+      <div className="block lg:hidden">
         <Image
           src={'/ranchat-logo.png'}
           alt="ranchat-logo"

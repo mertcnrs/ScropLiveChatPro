@@ -19,7 +19,7 @@ export default function Loading(): React.ReactNode {
 
         {/* Brand Name */}
         <span className="text-4xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
-          Anivo
+          Scrop
         </span>
       </div>
     </div>

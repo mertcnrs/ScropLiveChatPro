@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import socketSlice from './slices/socketSlice';
-import peerSlice from './slices/peerSlice';
-import gameSlice from './slices/gameSlice';
-import userSlice from './slices/userSlice';
-import {
-  useDispatch as useDispatchBase,
-  useSelector as useSelectorBase,
-} from 'react-redux';
+import { useDispatch as useDispatchBase, useSelector as useSelectorBase } from 'react-redux';
+import socketReducer from './slices/socketSlice';
+import peerReducer from './slices/peerSlice';
+import gameReducer from './slices/gameSlice';
+import userReducer from './slices/userSlice';
+import balanceReducer from './slices/balanceSlice';
 
 /**
  * Creates a store and includes all the slices as reducers.
@@ -22,23 +20,18 @@ export const store = configureStore({
       },
     }),
   reducer: {
-    socket: socketSlice,
-    peer: peerSlice,
-    game: gameSlice,
-    user: userSlice,
+    socket: socketReducer,
+    peer: peerReducer,
+    game: gameReducer,
+    user: userReducer,
+    balance: balanceReducer
   },
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
-// Inferred type: { users: UsersState }
-type AppDispatch = typeof store.dispatch;
-
-// Since we use typescript, let's utilize `useDispatch`
 export const useDispatch = () => useDispatchBase<AppDispatch>();
-
-// And utilize `useSelector`
 export const useSelector = <TSelected = unknown>(
   selector: (state: RootState) => TSelected
 ): TSelected => useSelectorBase<RootState, TSelected>(selector);

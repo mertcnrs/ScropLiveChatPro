@@ -26,7 +26,7 @@ export default function Home(): React.ReactNode {
       {/* Header */}
       <nav className="flex justify-between items-center px-4 md:px-8 py-4 relative z-10">
         <div className="flex items-center space-x-4 md:space-x-8">
-          <span className="text-2xl md:text-3xl font-bold">Anivo</span>
+          <span className="text-2xl md:text-3xl font-bold">Scrop</span>
           <div className="md:hidden flex space-x-3">
             <Link href="/" className="text-sm hover:text-purple-400">Keşfet</Link>
             <Link href="/" className="text-sm hover:text-purple-400">İndir</Link>

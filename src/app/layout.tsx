@@ -18,9 +18,17 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'RanChat Web',
+  title: 'ScropLive Chat',
   description: 'Random Video Chat Web Application',
   authors: [{ name: 'Diaz Linggaputra' }],
+  icons: {
+    icon: [
+      {
+        url: '/ranchat-logo.png',
+        type: 'image/png',
+      }
+    ],
+  },
 };
 
 export default function RootLayout({
