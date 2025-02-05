@@ -278,18 +278,18 @@ export default function MessagePopup({
         {selectedMessage ? (
           <div className="flex flex-col h-full">
             {/* Mesaj detay başlığı düzeni */}
-            <div className="flex-none px-4 py-3 border-b">
+            <div className="flex-none px-2 py-2">
               <div className="flex items-center">
-                <button onClick={() => setSelectedMessage(null)} className="text-gray-600 hover:text-gray-800 p-2">
-                  <IoIosArrowBack className="text-xl" />
+                <button onClick={() => setSelectedMessage(null)} className="text-gray-600 hover:text-gray-800">
+                  <IoIosArrowBack className="text-2xl" />
                 </button>
-                <div className="flex items-center gap-3 ml-2">
-                  <div className="w-10 h-10 rounded-full overflow-hidden">
+                <div className="flex items-center gap-2 ml-1">
+                  <div className="w-12 h-12 rounded-full overflow-hidden">
                     <Image 
                       src={selectedMessage.profilePic} 
                       alt="profile" 
-                      width={40} 
-                      height={40} 
+                      width={48} 
+                      height={48} 
                       className="w-full h-full object-cover"
                     />
                   </div>

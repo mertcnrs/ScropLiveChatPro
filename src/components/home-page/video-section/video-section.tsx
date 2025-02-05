@@ -301,13 +301,13 @@ export default function RandomVideoSection({
                       </div>
                       <div className="flex gap-3 justify-center mt-4">
                         <button
-                          onClick={() => console.log('Yükle tıklandı')}
+                          onClick={() => window.location.reload()}
                           className="px-8 py-2 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded-full transition-colors"
                         >
                           Yükle
                         </button>
                         <button
-                          onClick={onStopHandler}
+                          onClick={() => window.location.reload()}
                           className="px-8 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
                         >
                           İptal

@@ -35,39 +35,41 @@ export default function ChatMessageComponent({
             <div
               key={i}
               ref={messageRef}
-              className={`flex items-start gap-3 mb-3 ${
+              className={`flex items-start gap-2 mb-2 ${
                 msg.clientId === clientId ? 'flex-row-reverse' : 'flex-row'
               }`}
             >
               {/* Profil Resmi */}
-              <div className="flex-shrink-0">
-                <Image
-                  src={msg.clientId === clientId ? "/foto1.jpg" : "/foto2.jpg"}
-                  alt="profile"
-                  width={35}
-                  height={35}
-                  className="rounded-full"
-                />
-              </div>
+              {msg.clientId !== clientId && (
+                <div className="w-12 h-12 rounded-full overflow-hidden">
+                  <Image
+                    src="/foto2.jpg"
+                    alt="profile"
+                    width={45}
+                    height={45}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
 
               {/* Mesaj İçeriği */}
-              <div className={`flex flex-col ${
+              <div className={`flex flex-col max-w-[75%] ${
                 msg.clientId === clientId ? 'items-end' : 'items-start'
               }`}>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-medium text-purple-300">
+                  <span className="text-sm font-semibold text-purple-300">
                     {msg.clientId === clientId
                       ? RandomParticipantType.You
                       : RandomParticipantType.Guest}
                   </span>
                   <span className="text-xs text-gray-500">{format(msg.time)}</span>
                 </div>
-                <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+                <div className={`rounded-lg px-4 py-2 break-words ${
                   msg.clientId === clientId 
                     ? 'bg-purple-500/20 text-purple-100' 
                     : 'bg-[#2a2438] text-gray-200'
                 }`}>
-                  <Text size="2" weight="medium">{msg.message}</Text>
+                  <Text size="3" weight="medium" className="whitespace-pre-wrap">{msg.message}</Text>
                 </div>
               </div>
             </div>  
