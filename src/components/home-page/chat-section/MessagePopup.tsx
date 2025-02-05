@@ -277,18 +277,19 @@ export default function MessagePopup({
       <div className="p-4" style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto', scrollbarWidth: 'none' }}>
         {selectedMessage ? (
           <div className="flex flex-col h-full">
-            <div className="flex-none px-4 py-3">
-              <div className="flex items-center gap-3">
-                <button onClick={() => setSelectedMessage(null)} className="text-gray-600">
+            {/* Mesaj detay başlığı düzeni */}
+            <div className="flex-none px-4 py-3 border-b">
+              <div className="flex items-center">
+                <button onClick={() => setSelectedMessage(null)} className="text-gray-600 hover:text-gray-800 p-2">
                   <IoIosArrowBack className="text-xl" />
                 </button>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full overflow-hidden">
+                <div className="flex items-center gap-3 ml-2">
+                  <div className="w-10 h-10 rounded-full overflow-hidden">
                     <Image 
                       src={selectedMessage.profilePic} 
                       alt="profile" 
-                      width={48} 
-                      height={48} 
+                      width={40} 
+                      height={40} 
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -319,7 +320,7 @@ export default function MessagePopup({
               </div>
             )}
 
-            {/* Mesaj balonları */}
+            {/* Mesaj balonları arka plan rengi değişikliği */}
             <div className="flex-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 280px)' }}>
               <div className="bg-white p-4 rounded-lg">
                 <div className="space-y-4">
@@ -341,7 +342,7 @@ export default function MessagePopup({
                         <div className={`p-3 rounded-lg ${
                           message.isUser 
                             ? 'bg-[#8B5CF6] text-white rounded-br-none ml-auto' 
-                            : 'bg-white rounded-tl-none shadow-sm'
+                            : 'bg-gray-100 rounded-tl-none'
                         }`}>
                           <p className={message.isUser ? 'text-white' : 'text-gray-800'}>{message.text}</p>
                         </div>
