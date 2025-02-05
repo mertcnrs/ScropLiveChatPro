@@ -44,7 +44,7 @@ export default function GamePopoverComponent({
         >
           <div className="flex flex-col gap-1">
             <p className="text-[12px] xl:text-[15px] leading-[19px] font-medium mb-2.5 px-5">
-              Select multiplayer game
+              Multiplayer Oyun Seçin
             </p>
             <button
               type="button"
