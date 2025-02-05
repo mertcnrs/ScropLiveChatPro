@@ -19,7 +19,7 @@ export default function GamePopoverComponent({
   const { loading, status } = useSelector(getGameState);
 
   const onSelectGameHandler = (title: string) => {
-    socket.emit('userSelectGame', title);
+    socket.emit('userSelectGame', 'trivia');
   };
 
   if (loading) {
@@ -49,10 +49,10 @@ export default function GamePopoverComponent({
             <button
               type="button"
               className="cursor-pointer hover:bg-neutral-200 w-full px-5 items-center justify-center py-1"
-              onClick={() => onSelectGameHandler(GameChallengeTitle.Trivia)}
+              onClick={() => onSelectGameHandler('trivia')}
             >
               <p className="text-[11px] xl:text-[14px]">
-                Scrop Bil Bakalım 
+                Scrop Bilgi Yarışması
               </p>
             </button>
           </div>

@@ -38,7 +38,7 @@ export default function GameRequestModalComponent({
               Misafir sana oynaman için meydan okudu:
             </div>
             <span className="text-[14px] xl:text-[18px] uppercase font-extrabold">
-              {title}
+              {title === 'trivia' ? 'Bilgi Yarışması' : title}
             </span>
           </Dialog.Title>
           <Dialog.Description className="mt-[10px] mb-8 text-[12px] xl:text-[15px] leading-normal">
