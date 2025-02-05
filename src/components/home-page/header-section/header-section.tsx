@@ -31,6 +31,9 @@ export default function HeaderSection({
           />
           <span className="text-white text-xs sm:text-sm">{amount}</span>
         </div>
+        <span className="text-red-500 text-[10px] sm:text-sm font-medium animate-pulse">
+          🔥 <span className="hidden sm:inline">Bu proje </span>Test<span className="hidden sm:inline"> amaclı yapılmıştır!</span>
+        </span>
       </div>
       <OnlineIndicatorComponent
         init={guest.init}
