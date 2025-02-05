@@ -52,7 +52,7 @@ export default function GamePopoverComponent({
               onClick={() => onSelectGameHandler(GameChallengeTitle.Trivia)}
             >
               <p className="text-[11px] xl:text-[14px]">
-                Trivia Triumph: Blank Frenzy
+                Scrop Bil Bakalım 
               </p>
             </button>
           </div>

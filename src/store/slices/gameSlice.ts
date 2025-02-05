@@ -37,9 +37,9 @@ export const setGuessedAnswer = createAsyncThunk(
 
     const messages = [
       createSystemMessage(
-        "You are correct! Type '/next' for the next question."
+        "Harikasın! Sonraki soru için '/next' yazın."
       ),
-      createSystemMessage('Current Score'),
+      createSystemMessage('Mevcut Puan'),
       createSystemMessage(`Yours: ${yourScore}  |   Guest: ${guestScores}`),
     ];
 

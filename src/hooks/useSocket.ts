@@ -25,7 +25,7 @@ const useSocket = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Initialize Socket.io connection
+    // Socket.io bağlantısını başlat
     const _socket = io(API_BASE_URL, {
       transports: ['websocket', 'polling'],
       forceNew: true,
@@ -42,7 +42,7 @@ const useSocket = () => {
     });
 
     _socket.on('disconnect', () => {
-      console.log('socket server disconnected.');
+      console.log('Soket sunucusu bağlantısı kesildi.');
     });
 
     _socket.on('guestCount', (size: number) => {
@@ -61,7 +61,7 @@ const useSocket = () => {
       dispatch(setPeerParticipants([]));
       dispatch(resetGameState());
       dispatch(
-        setRemoteMessage([createSystemMessage('The chat session has ended.')])
+        setRemoteMessage([createSystemMessage('Sohbet oturumu sonlandırıldı.')])
       );
     });
 
@@ -96,7 +96,7 @@ const useSocket = () => {
         dispatch(
           setRemoteMessage([
             createSystemMessage(
-              'Game challenge accepted. Type "/stop" to quit challenge.'
+              'Oyun daveti kabul edildi. Oyunu sonlandırmak için "/stop" yazın.'
             ),
           ])
         );
@@ -106,7 +106,7 @@ const useSocket = () => {
     _socket.on('rejectGameChallenge', () => {
       dispatch(resetGameState());
       dispatch(
-        setRemoteMessage([createSystemMessage('Game challenge rejected.')])
+        setRemoteMessage([createSystemMessage('Oyun daveti reddedildi.')])
       );
     });
 
