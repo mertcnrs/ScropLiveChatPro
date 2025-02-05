@@ -321,7 +321,7 @@ export default function MessagePopup({
 
             {/* Mesaj balonları */}
             <div className="flex-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 280px)' }}>
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-white p-4 rounded-lg">
                 <div className="space-y-4">
                   {messageBubbles
                     .find(bubble => bubble.messageId === selectedMessage.id)
