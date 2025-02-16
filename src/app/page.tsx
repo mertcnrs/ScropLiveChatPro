@@ -28,21 +28,40 @@ export default function Home(): React.ReactNode {
       {/* Header */}
       <nav className="flex justify-between items-center px-4 md:px-8 py-4 relative z-50">
         <div className="flex items-center space-x-4 md:space-x-8">
-          <span className="text-2xl md:text-3xl font-bold">Scrop</span>
-          <div className="md:hidden flex space-x-3">
-            <Link href="/" className="text-sm hover:text-purple-400">Keşfet</Link>
-            <Link href="/" className="text-sm hover:text-purple-400">İndir</Link>
+          <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">Scrop</span>
+          
+          {/* Mobil Menü */}
+          <div className="md:hidden flex items-center space-x-4">
+            <Link href="/" className="text-sm hover:text-purple-400 transition-all">Keşfet</Link>
+            <Link href="/" className="text-sm hover:text-purple-400 transition-all">İndir</Link>
           </div>
-          <div className="hidden md:block space-x-6 text-lg">
-            <Link href="/" className="border-b-2 border-purple-500 hover:text-purple-400 transition-colors">Anayasfa</Link>
-            <Link href="/" className="hover:text-purple-400 transition-all">Keşfet</Link>
-            <Link href="/" className="hover:text-purple-400 transition-all">İndir</Link>
+
+          {/* Masaüstü Menü */}
+          <div className="hidden md:flex items-center space-x-6 text-lg">
+            <Link href="/" className="relative group">
+              <span className="border-b-2 border-purple-500 hover:text-purple-400 transition-colors">Anasayfa</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link href="/" className="relative group">
+              <span className="hover:text-purple-400 transition-all">Keşfet</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link href="/" className="relative group">
+              <span className="hover:text-purple-400 transition-all">İndir</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
+            </Link>
           </div>
         </div>
-        <Link href="/chat">
-          <button className="bg-purple-600 hover:bg-purple-700 px-4 md:px-6 py-2 rounded-full text-white text-sm md:text-base">
-            Oturum Aç
-          </button>
+        <Link 
+          href="https://mertcinar.vercel.app/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-1.5 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all flex items-center gap-2 group shadow-lg hover:shadow-purple-500/25"
+        >
+          <span>Geliştirici</span>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
         </Link>
       </nav>
 
