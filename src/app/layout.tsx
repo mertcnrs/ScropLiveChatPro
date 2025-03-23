@@ -2,6 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import type { Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 import '@radix-ui/themes/styles.css';
 import './globals.css';
 import './theme-config.css';
@@ -49,6 +50,7 @@ export default function RootLayout({
           >
             {children}
           </Theme>
+          <Analytics />
         </StoreProvider>
       </body>
     </html>
